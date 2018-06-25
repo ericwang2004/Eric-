@@ -80,13 +80,20 @@ class LinkedList:
     #	Do bounds checking on the y variable
     def insert(self, x, y):
         # [10, 5, 3, 1].insert(2, 1) = [10, 2, 5, 3, 1]
+
+        
+        # not sure how to do without if statement
         pointer = self.head
         if y == 0:
             new_node = LinkedListNode(x, pointer)
             self.head = new_node
         else:
             for i in range(1, y):
-                pointer = pointer.next_
+                try:
+                    pointer = pointer.next_ # check if there exists a node after pointer
+                except AttributeError:
+                    print('y out of bounds')
+                    return
             new_node = LinkedListNode(x, pointer.next_)
             pointer.next_ = new_node
 
@@ -175,7 +182,7 @@ print(LL.find(100))
 print(node1) # 10, 5, 3, 1
 LL.append(15)
 print(node1) # 10, 5, 3, 1, 15
-LL.insert(2, 0)
+LL.insert(2, 110)
 print(LL.head) # 2, 10, 5, 3, 1, 15
 
 
