@@ -38,7 +38,6 @@ class LinkedListNode:
         self.value = value
         self.next_ = next_
 
-    # Finish this for Friday
     def __repr__(self):
         if self.next_ == 0:
             return str(self.value)
@@ -47,7 +46,7 @@ class LinkedListNode:
 
 
 class LinkedList:
-  	# head is a LinkedListNode
+    # head is a LinkedListNode
     def __init__(self, head):
         self.head = head
 
@@ -75,25 +74,22 @@ class LinkedList:
     # x, y are integers
     # Insert a LinkedListNode with the value of x at position y of the LinkedList
 
-    # For Tuesday:
-    #	Write this without if/else statement
-    #	Do bounds checking on the y variable
     def insert(self, x, y):
         # [10, 5, 3, 1].insert(2, 1) = [10, 2, 5, 3, 1]
 
         
         # not sure how to do without if statement
         pointer = self.head
+        for i in range(1, y):
+            try:
+                pointer = pointer.next_ # check if there exists a node after pointer
+            except AttributeError:
+                print('y out of bounds')
+                return
         if y == 0:
             new_node = LinkedListNode(x, pointer)
             self.head = new_node
         else:
-            for i in range(1, y):
-                try:
-                    pointer = pointer.next_ # check if there exists a node after pointer
-                except AttributeError:
-                    print('y out of bounds')
-                    return
             new_node = LinkedListNode(x, pointer.next_)
             pointer.next_ = new_node
 
@@ -163,31 +159,20 @@ def list_to_linked_list(L):
 
 
 
-node4 = LinkedListNode(1, 0)
-node3 = LinkedListNode(3, node4)
-node2 = LinkedListNode(5, node3)
-node1 = LinkedListNode(10, node2)
+array = [-25, 27, -4, 24, 12, 26, -74, -9, 67, -6, -31, -50, -28,
+ 40, 70, -69, 98, -89, -87, -40, 54, -64, -51, 56, 76, 81,
+ 99, 13, -18, -50, -70, 43, -69, -41, -21, 27, 91, 23, -94,
+ 17, 73, -8, 67, 40, 45, 52, 54, 95, -50, -10, -79, 65, 52,
+ 27, 69, 8, -40, 34, -76, -82, 2, -16, 58, 13, 27, 8, -84,
+ 3, -30, 21, 11, -10, -71, -89, 66, 22, -89, 24, 54, 92, -82,
+ -71, -4, -36, -58, 22, -60, -51, -48, -35, -33, -6, -53, -37,
+ -28, 55, -79, -44, 72, 35]
 
-LL = LinkedList(node1)
-
-# Expect True
-print(LL.find(10))
-
-# Expect True
-print(LL.find(1))
-
-# Expect False
-print(LL.find(100))
-
-print(node1) # 10, 5, 3, 1
-LL.append(15)
-print(node1) # 10, 5, 3, 1, 15
-LL.insert(2, 110)
-print(LL.head) # 2, 10, 5, 3, 1, 15
+ll = list_to_linked_list(array)
+pointer = ll.head
+while pointer.next != 0:
+    pointer = pointer.next_
+print(pointer)
 
 
-L = [5, 3, 9, -2, 100]
-LL2 = list_to_linked_list(L)
-print(LL2)
-LL2.delete(10)
-print(LL2)
+

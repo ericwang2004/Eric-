@@ -1,8 +1,4 @@
-# For Tuesday:
-# 1. Constructor for DoubleLinkedList
-# 2. Write a __repr__ for both classes
-# 3. Insertion in a DoubleLinkedList
-# 4. For DoubleLinkedList, write a method to print the list backwards
+# comment
 
 class DoubleLinkedListNode:
     
@@ -40,11 +36,18 @@ class DoubleLinkedList:
         # 10(*) - 5 - 3 - 1
         for i in range(1, y):
             pointer = pointer.next_ # pointer is at the yth node 10 - 5(*) - 3 - 1
-        new_node = DoubleLinkedListNode(x, pointer.next_.next_, pointer) 
-        pointer.next_ = new_node
-        new_node.next_ = pointer.next_.next_.previous_
-        new_node.next_.previous_ = new_node
-        
+
+        if y == 0:
+            new_node = DoubleLinkedListNode(x, pointer, 0)
+            self.head = new_node
+            new_node.next_.previous_ = new_node
+            
+        else:
+            new_node = DoubleLinkedListNode(x, pointer.next_.next_, pointer) 
+            pointer.next_ = new_node
+            new_node.next_ = pointer.next_.next_.previous_
+            new_node.next_.previous_ = new_node
+            
 
     def __repr__(self):
         return self.head.__repr__()
@@ -58,7 +61,22 @@ class DoubleLinkedList:
             pointer = pointer.previous_
         print(str(pointer.value)) # to print the first element at the end of the string
     
+    def delete(self, x):
+        pointer = self.head
+        if pointer.value == x:
+            pointer.next_.previous_ = 0
+            self.head = pointer.next_
+            return
+
+        while pointer.next_ != 0 and pointer.next_.value != x:
+            pointer = pointer.next_
+        if pointer.next_ == 0:
+            print('not found')
+            return
         
+        pointer.next_ = pointer.next_.next_
+        if pointer.next_ != 0:
+            pointer.next_.previous_ = pointer
 
 
 
@@ -71,8 +89,5 @@ node2.next_ = node3
 node3.next_ = node4
 
 DLL = DoubleLinkedList(node1)
-DLL.print_backwards() # 1, 3, 5, 10
-
-DLL.insert(2, 2)
-print(DLL.head)
-DLL.print_backwards() # 1, 3, 2, 5, 10
+DLL.delete(5)
+print(DLL)
