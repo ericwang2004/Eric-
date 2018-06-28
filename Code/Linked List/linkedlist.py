@@ -157,6 +157,16 @@ def list_to_linked_list(L):
         head = node
     return ll
 
+def iscyclic(ll):
+    p1 = ll.head
+    p2 = ll.head.next_
+    while p2.next_ != 0 and p2.next_.next_ != 0 and p1.next_ != 0:
+        if id(p1) == id(p2):
+            return True
+        p2 = p2.next_.next_
+        p1 = p1.next_
+    return False
+
 
 
 array = [-25, 27, -4, 24, 12, 26, -74, -9, 67, -6, -31, -50, -28,
@@ -170,9 +180,14 @@ array = [-25, 27, -4, 24, 12, 26, -74, -9, 67, -6, -31, -50, -28,
 
 ll = list_to_linked_list(array)
 pointer = ll.head
-while pointer.next != 0:
+while pointer.next_ != 0:
     pointer = pointer.next_
-print(pointer)
+pointer.next_ = ll.head.next_.next_ # 35.next_ = -4
+print(iscyclic(ll)) # True
+
+
+
+
 
 
 
