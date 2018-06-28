@@ -37,10 +37,10 @@ class DoubleLinkedList:
         for i in range(1, y):
             pointer = pointer.next_ # pointer is at the yth node 10 - 5(*) - 3 - 1
 
-        if y == 0:
-            new_node = DoubleLinkedListNode(x, pointer, 0)
-            self.head = new_node
-            new_node.next_.previous_ = new_node
+        if y == 0: # check if element is to be inserted at the beginning
+            new_node = DoubleLinkedListNode(x, pointer, 0) # set new_node to point to the original head
+            self.head = new_node # make new_node the new head
+            new_node.next_.previous_ = new_node # make the second node point to the new_node
             
         else:
             new_node = DoubleLinkedListNode(x, pointer.next_.next_, pointer) 
@@ -63,14 +63,15 @@ class DoubleLinkedList:
     
     def delete(self, x):
         pointer = self.head
-        if pointer.value == x:
-            pointer.next_.previous_ = 0
+        if pointer.value == x: # check if deleting first element
+            pointer.next_.previous_ = 0 
             self.head = pointer.next_
+            # set previous of second element to 0 and head of list to second element
             return
 
-        while pointer.next_ != 0 and pointer.next_.value != x:
+        while pointer.next_ != 0 and pointer.next_.value != x: #check if there exists a next element
             pointer = pointer.next_
-        if pointer.next_ == 0:
+        if pointer.next_ == 0: # verify that item is an element in the list
             print('not found')
             return
         
