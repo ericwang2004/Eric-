@@ -157,14 +157,14 @@ def list_to_linked_list(L):
         head = node
     return ll
 
-def iscyclic(ll):
+def is_cyclic(ll):
     p1 = ll.head
-    p2 = ll.head.next_
+    p2 = ll.head
     while p2.next_ != 0 and p2.next_.next_ != 0 and p1.next_ != 0:
-        if id(p1) == id(p2):
-            return True
         p2 = p2.next_.next_
         p1 = p1.next_
+        if id(p1) == id(p2):
+            return True
     return False
 
 
@@ -183,7 +183,7 @@ pointer = ll.head
 while pointer.next_ != 0:
     pointer = pointer.next_
 pointer.next_ = ll.head.next_.next_ # 35.next_ = -4
-print(iscyclic(ll)) # True
+print(is_cyclic(ll)) # True
 
 
 
