@@ -57,13 +57,13 @@ def left_right(n):
         binary = dec_to_binary(i) # convert base 10 integer to binary
         length = 0 # in case the binary representation has less than n digits, the first few should be r's
         for c in binary: # parse string and replace ls with ls and 0s with rs
-            length += 1 =
+            length += 1
             if c == '1':
-                string = 'l' + string
+                string = string + 'l'
             else: # c = '0'
-                string = 'r' + string
+                string = string + 'r'
         string = 'r'*(n-length) + string # fill the first few places with r's
-        return string
+        print(string)
         
 
 
