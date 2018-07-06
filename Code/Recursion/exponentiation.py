@@ -21,17 +21,15 @@ def exp2(a, b): # iteratively
             result = result**2
     return result
 
-def exp2_recursive(a, binary_b):
-    #binary_b = bin(b)[2:]
-    # assume binary_b is already in binary
-    # this doesn't work
-    if len(binary_b) == 0:
-        return 1
-    else:
-        if binary_b[0] == '1':
-            return exp2_recursive(a, binary_b[1:])**2*a
-        else:
-            return exp2_recursive(a, binary_b[1:])**2
+def exp2_recursive(a, b):
+    if b == 1:
+        return a
+    if b % 2 == 0:
+        return exp2_recursive(a**2, b/2)
+    else: # b % 2 == 1
+        return exp2_recursive(a**2*a, (b-1)/2)
+
+print(exp2_recursive(3, 5))
 
 
 
