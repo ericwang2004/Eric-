@@ -13,25 +13,24 @@ def print_list_iterative(l):
 def print_list_recursive(l):
     if len(l) >= 1:
         print(l[0])
-    print_list_recursive(l[1:])
+        print_list_recursive(l[1:])
+
 
 def search_list_iterative(l, item):
     i = 0
     while i < len(l):
         if l[i] == item:
-            return i
+            return True
         i += 1
-    return 'not found'
+    return False
 
 def search_list_recursive(l, item):
     if len(l) == 0:
-        # return ?
-        return 'not found'
+        return False 
     elif l[0] == item: # if item is the first element, then return the index
-        # return 0
-        return 'found'
+        return True
     else:
-        return search_list_recursive(l[1:], item) # +1
+        return search_list_recursive(l[1:], item)
     
 def sum_list_iterative(l):
     i = 0
