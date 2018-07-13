@@ -33,6 +33,34 @@ def insertion_sort(l):
                 break                       # and proceed to run insertion_sort on the resulting modified list
             i += 1 
         return insertion_sort(l)
+
+def merge(l1, l2):
+    result = []
+    i = 0
+    j = 0
+
+    while i < len(l1) and j < len(l2):
+        if l1[i] <= l2[j]:
+            result.append(l1[i])
+            i += 1
+        else:
+            result.append(l2[j])
+            j += 1
+
+    for x in range(i, len(l1)):
+        result.append(x)
+    for y in range(j, len(l2)):
+        result.append(y)
+
+    return result
+
+
+print(merge([1, 3, 4, 7], [2, 4, 6, 9]))
+
+
+
+
+
 '''
 test_list = [random.randrange(1, 101) for x in range(1, 101)]
 
