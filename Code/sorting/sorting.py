@@ -1,6 +1,6 @@
-# 1. Finish insertion_sort
-# 2. comments
-# 3. time both and O()
+# 1. Insertion_sort iteratively
+# 2. Comments
+# 3. 
 
 import time
 import random
@@ -65,14 +65,23 @@ def mergesort(l):
 
 print(mergesort([1, 5, 3, 6]))
 
-
-
+#test_list = [random.randrange(1, 101) for x in range(1, 101)]
+#print(insertion_sort(test_list))
 
 '''
-test_list = [random.randrange(1, 101) for x in range(1, 101)]
+start = time.perf_counter()
+
+end = time.perf_counter()
+
 
 start = time.perf_counter()
-insertion_sort(test_list)
+
 end = time.perf_counter()
-print(end-start)
+
+
+start = time.perf_counter()
+
+end = time.perf_counter()
 '''
+
+
