@@ -35,6 +35,7 @@ def insertion_sort(l):
         return insertion_sort(l)
 
 def merge(l1, l2):
+    
     result = []
     i = 0
     j = 0
@@ -48,15 +49,21 @@ def merge(l1, l2):
             j += 1
 
     for x in range(i, len(l1)):
-        result.append(x)
+        result.append(l1[x])
     for y in range(j, len(l2)):
-        result.append(y)
+        result.append(l2[y])
 
     return result
 
+def mergesort(l):
+    right = l[len(l)//2:]
+    left = l[:len(l)//2]
+    if len(l) == 1:
+        return l
+    else:
+        return merge(mergesort(right), mergesort(left))
 
-print(merge([1, 3, 4, 7], [2, 4, 6, 9]))
-
+print(mergesort([1, 5, 3, 6]))
 
 
 
