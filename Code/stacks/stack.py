@@ -1,5 +1,5 @@
-#
-#
+# 1. Balanced parentheses
+# 2. Evaluate postfix expression
 #
 #
 
@@ -37,16 +37,40 @@ class Stack:
 
 def is_balanced(eq):
     s = Stack()
+    parens = {')':'(', ']':'[', '}':'{', '>':'<'}
     for char in eq:
-        if char == '(':
-            s.push(1)
-        elif char == ')':
+        if char in parens.values(): # the parens before the first right parens must be its corresponding left parens
+            s.push(char)
+        elif char in parens.keys():
             try:
-                s.pop()
+                if parens[char] != s.pop(): # if the stack is empty when tried to pop, the parens are not balanced
+                    return False
             except Exception:
                 return False
-    return s.is_empty()
+    return s.is_empty() # check if the number of each left/right parens is matching
 
+def eval_expr(n1, n2, op):
+    # eval_expr(1, 2, +) -> 3
+    if op == '+':
+        return n1 + n2
+    elif op == '-':
+        return n1 - n2
+    elif op == 'x':
+        return n1 * n2
+    else: # op == '/'
+        return n1/n2
+
+def eval_postfix(expr):
+    # "1234+/-" -> (((4+3)/2)-1)
+    s = Stack()
+    for char in expr:
+        if char in '0123456789': # if char is a number
+            s.push(int(char))
+        else: # if char is in [+, -, x, /]
+            s.push(eval_expr(s.pop(), s.pop(), char))
+    return s.pop() # the result is the only number in s
+
+print(eval_postfix("12+34x/"))
 
 
 
