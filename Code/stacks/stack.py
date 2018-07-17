@@ -54,11 +54,11 @@ def eval_expr(n1, n2, op):
     if op == '+':
         return n1 + n2
     elif op == '-':
-        return n1 - n2
+        return n2-n1
     elif op == 'x':
         return n1 * n2
     else: # op == '/'
-        return n1/n2
+        return n2/n1
 
 def eval_postfix(expr):
     # "1234+/-" -> (((4+3)/2)-1)
@@ -70,7 +70,7 @@ def eval_postfix(expr):
             s.push(eval_expr(s.pop(), s.pop(), char))
     return s.pop() # the result is the only number in s
 
-print(eval_postfix("12+34x/"))
+print(eval_postfix("12+34x/")) # (1+2)/(3x4)
 
 
 
