@@ -1,4 +1,4 @@
-#
+# Circular queues
 #
 #
 #
@@ -12,7 +12,6 @@ class Queue:
         self.size = 0
         self.head = 0
         self.tail = -1
-        self.limit = 100
 
     def push(self, value):
         # appends new elements to the right side
@@ -22,7 +21,7 @@ class Queue:
 
     def pop(self):
         if self.size == 0:
-            raise Exception("Tried to pop from empty Queue")
+            raise Exception("Tried to pop from empty Queue") # pop from the left
         else:
             self.head += 1
             self.size -= 1
@@ -37,6 +36,34 @@ class Queue:
     def __repr__(self):
         return str(self.elements[self.head:])
 
+class CircularQueue:
+
+    def __init__(self):
+        self.elements = []
+        self.limit = 10
+        self.head = 0
+        self.tail = -1
+
+    def push(self, value):
+        self.tail += 1
+        if len(self.elements) >= self.limit:
+            self.tail = 0
+            self.elements[0] = value
+        else:
+            self.elements.append(value)
+                          
+    def pop(self):
+        popped = self.elements[self.head]
+        self.head += 1
+        
+        return popped
+
+    def __repr__(self):
+        return str(self.elements)
+    
+        
+        
+
 def reverse(q):
     r = Queue()
     s = Stack()
@@ -47,14 +74,13 @@ def reverse(q):
         r.push(s.pop())
     return r
 
-q = Queue()
-for i in range(1, 6):
+q = CircularQueue()
+for i in range(1, 11):
     q.push(i)
-r = reverse(q)
-print(r)
 
-
-
+print(q) # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+q.push(100)
+print(q, q.head, q.tail)
 
 
 
