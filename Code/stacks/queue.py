@@ -39,28 +39,46 @@ class Queue:
 class CircularQueue:
 
     def __init__(self):
-        self.elements = []
+        
         self.limit = 10
+        self.elements = [0]*self.limit
+        self.size = 0
         self.head = 0
         self.tail = -1
 
     def push(self, value):
+        if self.size >= self.limit:
+            print('Cannot add more elements')
+            return
+        
+        self.size += 1
         self.tail += 1
-        if len(self.elements) >= self.limit:
-            self.tail = 0
-            self.elements[0] = value
-        else:
-            self.elements.append(value)
+        self.tail %= self.limit
+        self.elements[self.tail] = value
                           
     def pop(self):
+        if self.size < 1:
+            print('Cannot pop')
+            return
+        
+        self.size -= 1
         popped = self.elements[self.head]
         self.head += 1
+        self.head %= self.limit
         
         return popped
 
+    def clear(self):
+        while self.size > 0:
+            self.pop()
+
     def __repr__(self):
-        return str(self.elements)
-    
+        if self.size == 0:
+            return str([])
+        if self.head <= self.tail:
+            return str(self.elements[self.head:self.tail+1])
+        elif self.head > self.tail:
+            return str(self.elements[self.head:]+self.elements[:self.tail+1])
         
         
 
@@ -75,11 +93,31 @@ def reverse(q):
     return r
 
 q = CircularQueue()
-for i in range(1, 11):
+for i in range(1, 6):
     q.push(i)
+    print(q, q.head, q.tail) # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    
+q.pop()
+print(q, q.head, q.tail)
 
-print(q) # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-q.push(100)
+q.pop()
+print(q, q.head, q.tail)
+
+for i in range(6, 11):
+    q.push(i)
+    print(q, q.head, q.tail)
+
+q.push(11)
+print(q, q.head, q.tail)
+
+q.push(12)
+print(q, q.head, q.tail)
+
+for i in range(1, 9):
+    q.pop()
+    print(q, q.head, q.tail)
+
+q.clear()
 print(q, q.head, q.tail)
 
 
