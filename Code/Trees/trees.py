@@ -53,11 +53,31 @@ class BinaryTreeNode:
     def height(self):
         # returns number of levels
         # root is at level 0 but has height 1
-        pass
+        if self.is_leaf():
+            return 1
+        elif self.right == 0 and self.left != 0:
+            return self.left.height() + 1
+        elif self.right != 0 and self.left == 0:
+            return self.right.height() + 1
+        else: # self.right != 0 and self.left != 0
+            return max(self.right.height(), self.left.height()) + 1
 
     def invert(self):
         # swaps left and right children of every node
-        pass
+        if self.is_leaf():
+            return
+        elif self.right == 0 and self.left != 0:
+            self.right = self.left
+            self.left = 0
+            self.right.invert()
+        elif self.right != 0 and self.left == 0:
+            self.left = self.right
+            self.right = 0
+            self.left.invert()
+        else:
+            self.right, self.left = self.left, self.right
+            self.right.invert()
+            self.left.invert()
 
     def is_full(self):
         # check if every node in the subtree has two or zero children
@@ -97,7 +117,27 @@ bt = BinaryTree(l[0])
 l[0].right = l[1]
 l[0].left = l[2]
 
-l[1].right = l[3]
-l[1].left = l[4]
+l[2].right = l[3]
+l[2].left = l[4]
 
-print(bt.is_full())
+'''
+              0
+        2          1
+     4     3  
+
+'''
+
+bt.invert()
+print(l[2].right.value, l[2].left.value) # 4 3
+
+
+
+
+
+
+
+
+
+
+
+
