@@ -104,10 +104,33 @@ class BinaryTreeNode:
 			self.left.preorder()
 		if self.right != 0:
 			self.right.preorder()
+
+	def inorder(self):
+		if self.left != 0:
+			self.left.inorder()
+		print(self.value)
+		if self.right != 0:
+			self.right.inorder()
+
+	def postorder(self):
+		if self.left != 0:
+			self.left.postorder()
+		if self.right != 0:
+			self.right.postorder()
+		print(self.value)
 # preorder: itself, left, right
 # inorder: left, itself, right 4, 2, 5, 3, 6, 0, 1
 # postorder: left, right, itself 4, 5, 6, 3, 2, 1, 0
-
+	
+	def maximum(self):
+		if self.is_leaf():
+			return self.value
+		elif self.right != 0 and self.left == 0:
+			return max(self.right.maximum(), self.value)
+		elif self.left != 0 and self.right == 0:
+			return max(self.left.maximum(), self.value)
+		else:
+			return max(self.right.maximum(), self.left.maximum(), self.value)
 
 
 
@@ -139,8 +162,26 @@ class BinaryTree:
 
 	def preorder(self):
 		self.root.preorder()
+
+	def inorder(self):
+		self.root.inorder()
+
+	def postorder(self):
+		self.root.postorder()
+
+	def maximum(self):
+		return self.root.maximum()
+
+def combine(root, tree1, tree2):
+	new_tree = BinaryTree(root)
+	root.left = tree1.root
+	root.right = tree2.root
+	return new_tree
+
+
+
 l = [BinaryTreeNode(i) for i in range(5)]
-bt = BinaryTree(l[0])
+bt1 = BinaryTree(l[0])
 
 l[0].right = l[1]
 l[0].left = l[2]
@@ -152,13 +193,9 @@ l[2].left = l[4]
 			  0
 		2		   1
 	 4	   3  
-		 5   6
+
 '''
 
-
-bt.preorder()
-bt.invert()
-bt.preorder()
 
 
 
