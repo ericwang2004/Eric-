@@ -1,7 +1,7 @@
-#
-#
-#
-#
+# for every function that can be written with 3 cases, write it with 3 cases
+# comment code, summarize print_path_to and sum_path
+# write equals method for node and tree class
+# given a sorted array, write a function to return the index of an element in O(log n)
 
 class BinaryTreeNode:
 
@@ -132,6 +132,30 @@ class BinaryTreeNode:
 		else:
 			return max(self.right.maximum(), self.left.maximum(), self.value)
 
+	def print_path_to(self, value):
+		print(self.value)
+		if self.value == value:
+			return
+		elif self.right == 0 and self.left != 0:
+			self.left.print_path_to(value)
+		elif self.right != 0 and self.left == 0:
+			self.right.print_path_to(value)
+		else:
+			if self.right.contains(value):
+				self.right.print_path_to(value)
+			elif self.left.contains(value):
+				self.left.print_path_to(value)
+
+	def sum_path_helper(self, path):
+		if self.is_leaf():
+			print(self.value+sum(path))
+		if self.left != 0:
+			self.left.sum_path_helper(path+[self.value])
+		if self.right != 0:
+			self.right.sum_path_helper(path+[self.value])
+
+	def sum_path(self):	
+		self.sum_path_helper([])
 
 
 class BinaryTree:
@@ -172,6 +196,12 @@ class BinaryTree:
 	def maximum(self):
 		return self.root.maximum()
 
+	def print_path_to(self, value):
+		self.root.print_path_to(value)
+
+	def sum_path(self):
+		self.root.sum_path()
+
 def combine(root, tree1, tree2):
 	new_tree = BinaryTree(root)
 	root.left = tree1.root
@@ -180,14 +210,16 @@ def combine(root, tree1, tree2):
 
 
 
-l = [BinaryTreeNode(i) for i in range(5)]
-bt1 = BinaryTree(l[0])
+l = [BinaryTreeNode(i) for i in range(32)]
+l = [0] + l
 
-l[0].right = l[1]
-l[0].left = l[2]
+bt = BinaryTree(l[1])
+for i in range(1, 16):
+	l[i].left = l[2*i]
+	l[i].right = l[2*i+1]
 
-l[2].right = l[3]
-l[2].left = l[4]
+
+
 
 '''
 			  0
