@@ -174,7 +174,8 @@ class BinaryTreeNode:
 	def sum_path(self):	
 		self.sum_path_helper([])
 
-	def equals(self, other):
+	def __eq__(self, other):
+		'''
 		# allows for comparison between two binary trees
 		# two binary trees are equal if each node has the same left and right children
 		
@@ -191,7 +192,28 @@ class BinaryTreeNode:
 			return self.right.equals(other.right)
 		if self.left != 0 and other.left != 0 and self.left.value == other.left.value:
 			return self.left.equals(other.left)
+		'''
+		if type(self) != type(other):
+			return False
+		r = True
+		if self.value != other.value:
+			r = False
+
+		if self.right == other.right == 0:
+			r &= True
+		elif self.right != 0 and other.right != 0:
+			r &= self.right == other.right
+		else:
+			r = False
 		
+		if self.left == other.left == 0:
+			r &= True
+		elif self.left != 0 and other.left != 0:
+			r &= self.left == other.left
+		else:
+			r = False
+		
+		return r
 
 class BinaryTree:
 
@@ -238,7 +260,7 @@ class BinaryTree:
 		self.root.sum_path()
 	
 	def __eq__(self, other):
-		return self.root.equals(other.root)
+		return self.root == other.root
 
 def combine(root, tree1, tree2):
 	new_tree = BinaryTree(root)
