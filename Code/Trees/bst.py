@@ -1,7 +1,8 @@
-# binary search tree
-# Binary tree that has specific ordering property:
-# For every node, all its left descendants must be less than the node and
-# all the right descendants must be greater than the node
+# Comment this
+# write a delete method
+# runtime of insert, delete, and contains
+
+
 
 '''
 
@@ -19,12 +20,49 @@ class BSTnode(trees.BinaryTreeNode):
 	def __init__(self, value):
 		super().__init__(value)
 
+	def contains(self, number):
+		if self.value == number:
+			return True
+		if self.is_leaf():
+			return False
+		elif self.value > number:
+			if self.left != 0:
+				return self.left.contains(number)
+			else:
+				return False
+		else:
+			if self.right != 0:
+				return self.right.contains(number)
+			else:
+				return False			
+
+
 class BST(trees.BinaryTree):
 	
 	def __init__(self, root):
 		super().__init__(root)
 
+	def contains(self, number):
+		return self.root.contains(number)
 
+	def insert(self, number):
+		node = self.root
+		while True:
+			if node.value == number:
+				break
+			elif node.value < number:
+				if node.right == 0:
+					node.right = BSTnode(number)
+					break
+				else:
+					node = node.right
+			else:
+				if node.left == 0:
+					node.left = BSTnode(number)
+					break
+				else:
+					node = node.left
+					
 
 def isBST(tree):
 	# check if a tree is a BST
@@ -49,8 +87,8 @@ def isBST(tree):
 
 
 
-nodes = [trees.BinaryTreeNode(i) for i in [10, 9, 17, 5, 12, 23]]
-bt = trees.BinaryTree(nodes[0])
+nodes = [BSTnode(i) for i in [10, 9, 17, 5, 12, 23]]
+bt = BST(nodes[0])
 
 nodes[0].left = nodes[1]
 nodes[0].right = nodes[2]

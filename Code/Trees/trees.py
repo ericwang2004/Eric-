@@ -47,10 +47,13 @@ class BinaryTreeNode:
 			return True
 		elif self.is_leaf(): # if node is leaf and node.value != value
 			return False
-		if self.left != 0: # if it has a left child, check if it contains value
+		if self.left != 0 and self.right == 0:
 			return self.left.contains(value)
-		if self.right != 0: # similarly for right child
+		if self.left == 0 and self.right != 0:
 			return self.right.contains(value)
+		if self.left != 0 and self.right != 0:
+			return self.left.contains(value) or self.right.contains(value)		
+
 
 	def height(self):
 		# returns number of levels
