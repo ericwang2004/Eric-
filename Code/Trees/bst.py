@@ -42,6 +42,8 @@ class BSTnode(trees.BinaryTreeNode):
 			else:
 				return False			
 
+	def __repr__(self):
+		 return "{} [{}, {}]".format(self.value, self.left, self.right)
 
 class BST(trees.BinaryTree):
 	
@@ -77,6 +79,7 @@ class BST(trees.BinaryTree):
 				else:
 					node = node.left
 		
+	
 	def delete(self, number):
 		# deletes the specified number from the BST
 		'''
@@ -95,50 +98,40 @@ class BST(trees.BinaryTree):
 		'''
 		# find the desired node to be deleted
 		parent = self.root
-		if parent.value != number:
-			# it is possible that the root is to be deleted
-			if parent.value > number:
-				node = parent.left
+		node = self.root
+		
+		while node.value != number:
+			# while searching for number, its parent must also be tracked
+			parent = node
+			if node.value > number:
+				node = node.left
 			else:
-				node = parent.right
-
-			while node.value != number:
-				# while searching for number, its parent must also be tracked
-				if node.value > number:
-					parent = node
-					node = node.left
-				else:
-					parent = node
-					node = node.right
-		else: # the root is deleted
-			node = self.root
+				node = node.right
 		
 		# first case
 		if node.is_leaf():
-			if parent.right == node:
-				parent.right = 0
-			else:
+			print(node)
+			if parent.left == node:
 				parent.left = 0
-		
+			else:
+				parent.right = 0
+
+	
 		# second case, node only has left child
 		elif node.left != 0 and node.right == 0:
 			# move the left descendants of the node to the node's position
 			if parent.right == node:
 				# we don't know if the node is the parent's left or right child
 				parent.right = node.left
-				node = 0
 			else: # parent.left == node
 				parent.left = node.left
-				node = 0
 		
 		# second case, node only has right child
 		elif node.right != 0 and node.left == 0:
 			if parent.right == node:
 				parent.right = node.right
-				node = 0
 			else: # parent.left == node
 				parent.left = node.right
-				node = 0
 		
 		# third case
 		else:
@@ -146,21 +139,14 @@ class BST(trees.BinaryTree):
 			x = node # hold the place of node
 			parent = node
 			node = node.left
+			print(parent, node)
 			while node.right != 0:
 				parent = node
 				node = node.right
 			# it's possible that node does not have a right subtree
-			if node.right == 0:
-				parent.left = node.left
-				node = 0
-			else:
-				x.value = node.value
-				if parent.right == node:
-					parent.right = 0
-				else:
-					parent.left = 0
-
-
+			x.value = node.value
+			parent.right = node.left
+			
 	
 def isBST(tree):
 	# check if a tree is a BST
@@ -185,16 +171,17 @@ def isBST(tree):
 
 
 
-nodes = [BSTnode(i) for i in [10, 9, 17, 5, 12, 23]]
+nodes = [BSTnode(i) for i in [10, 4, 16, 0, 2, 1, 3, 13, 11, 15, 15.5, 15.75, 15.6, 100, 95, 90, 85]]
 bt = BST(nodes[0])
 
-nodes[0].left = nodes[1]
 nodes[0].right = nodes[2]
-nodes[1].left = nodes[3]
-nodes[2].left = nodes[4]
-nodes[2].right = nodes[5]
-
-
+nodes[2].left = nodes[7]
+nodes[2].right = nodes[13]
+nodes[7].left = nodes[8]
+nodes[7].right = nodes[9]
+nodes[9].right = nodes[10]
+nodes[10].right = nodes[11]
+nodes[11].left = nodes[12]
 
 
 
