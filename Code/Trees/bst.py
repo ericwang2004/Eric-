@@ -8,7 +8,7 @@
 
 					10
 			9				17
-		5				12		23
+		5		9.5		12		23
 	  3	  8			  11  13  20  37
 
 '''
@@ -146,26 +146,42 @@ class BST(trees.BinaryTree):
 					node = node.right
 				# it's possible that node does not have a right subtree
 				x.value = node.value
-				parent.right = node.left
+				if parent == x:
+					parent.left = node.left
+				else:
+					parent.right = node.left
 		
 	
 		else: # the root node is the one to be deleted
 			'''
 			super_root = BSTnode(1)
 			super_root.left = self.root
-			
-			parent = self.root
-			node = self.root.left
-			if node.right != 0:
+			if super_root.left != 0 and super_root.right == 0:
+				# node only has left child
+				super_root.left = self.root.left
+				self.root = super_root.left
+			elif super_root.left == 0 and super_root.right != 0:
+				super_root.left = self.root.right
+				self.root = super_root.right
+			else:
+				# node has two children
+				node = self.root
+				parent = node
+				node = node.left
+
 				while node.right != 0:
 					parent = node
 					node = node.right
 				self.root.value = node.value
-				parent.right = 0
-			else:
-				self.
+				parent.right = node.left
 			'''
-			pass
+			super_root = BSTnode(self.root.value+1)
+			super_root.left = self.root
+			self.root = super_root
+			
+			self.delete(self.root.left.value)
+			self.root = self.root.left	
+				
 
 	def delete_recursive(self, current, number):
 		if current == 0:
@@ -189,9 +205,9 @@ class BST(trees.BinaryTree):
 				return current.right
 			else: # current has two children
 				# Find rightmost node in left subtree and set current.value = rightmost.value
-				minValue = current.left.minimum()
-				current.value = minValue
-				current.left = self.delete_recursive(current.left, minValue)
+				maxValue = current.left.maximum()
+				current.value = maxValue
+				current.left = self.delete_recursive(current.left, maxValue)
 		return current
 
 
@@ -219,7 +235,7 @@ def isBST(tree):
 			return isBST(right_tree)
 
 
-nodes = [BSTnode(i) for i in [10, 9, 5, 3, 17, 12, 23]]
+nodes = [BSTnode(i) for i in [10, 9, 5, 3, 17, 12, 23, 9.5]]
 bt = BST(nodes[0])
 
 nodes[0].left = nodes[1]
@@ -228,6 +244,7 @@ nodes[2].left = nodes[3]
 nodes[0].right = nodes[4]
 nodes[4].left = nodes[5]
 nodes[4].right = nodes[6]
+nodes[1].right = nodes[7]
 
 '''
 nodes = [BSTnode(i) for i in [10, 4, 16, 0, 2, 1, 3, 13, 11, 15, 15.5, 15.75, 15.6, 100, 95, 90, 85]]
