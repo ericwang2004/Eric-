@@ -32,7 +32,7 @@ def twos_complement(n):
 		return '0b' + '0'*(8-len(b)) + b
 	
 	else: # negative numbers
-		b = bin(-1*n)[2:]
+		b = bin(-n)[2:]
 		# binary representation of |n|
 		bits = list(b)
 		# invert the bits
@@ -54,10 +54,18 @@ def twos_complement(n):
 					break
 				j -= 1
 		return '0b' + '1'*(8-len(bits)) + ''.join(bits)
-		
+	
+def count_setbits(n):
+	count = 0
+	while n:
+		if n & 1:
+			count += 1
+		n >>= 1
+	return count
 
 
 
 
 
 
+	
