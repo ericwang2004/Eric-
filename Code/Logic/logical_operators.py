@@ -25,3 +25,39 @@ def multiply(n):
 	n = (n<<2) + n # multiply by 4 then add another n
 	n >>= 3 # divide by 8
 	return n
+
+def twos_complement(n):
+	if n >= 0:
+		b = bin(n)[2:]
+		return '0b' + '0'*(8-len(b)) + b
+	
+	else: # negative numbers
+		b = bin(-1*n)[2:]
+		# binary representation of |n|
+		bits = list(b)
+		# invert the bits
+		for i in range(len(bits)):
+			if bits[i] == '1':
+				bits[i] = '0'
+			else:
+				bits[i] = '1'
+		# add 1
+		if bits[-1] == '0':
+			bits[-1] = '1'
+		else:
+			j = len(bits)-1
+			while True:
+				if bits[j] == '1':
+					bits[j] = '0'
+				if bits[j-1] == '0':
+					bits[j-1] = '1'
+					break
+				j -= 1
+		return '0b' + '1'*(8-len(bits)) + ''.join(bits)
+		
+
+
+
+
+
+
