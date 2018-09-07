@@ -105,17 +105,34 @@ def construct_tree(freqs):
 	# at this point, the heap contains only one element
 	return h.minimum()	
 
-def encode(current_node, current_bin, char_dict):
-	if current_node.is_leaf():
-		char_dict[current_node] = current_bin
-	if current_node.left != 0:
-		print(encode(current_node.left, current_bin+'0', char_dict))
-	if current_node.right != 0:
-		print(encode(current_node.right, current_bin+'1', char_dict))
+def encode_helper(current_node, current_bin, char_dict):
+	if current_node.is_leaf(): # if the current node is a leaf
+		char_dict[current_node.char] = current_bin # update char_dict
+	if current_node.left != 0: # if the left node exists
+		encode_helper(current_node.left, current_bin+'0', char_dict)
+		# add 1 to the current binary path
+	if current_node.right != 0: # same for right
+		encode_helper(current_node.right, current_bin+'1', char_dict)
 	
+def encode(string):
+	tree = construct_tree(get_frequencies(string))
+	codes = {} # dictionary of encoded characters
+	encode_helper(tree.root, '', codes)
+	return codes
+
 def decode(bin_seq, tree):
 	# decode a given binary sequence
-	pass
+	pointer = tree.root
+	text = ''
+	for bit in bin_seq:
+		if bit == '0': # go left
+			pointer = pointer.left
+		else: # go right
+			pointer = pointer.right
+		if pointer.is_leaf(): # if we've arrived at a leaf
+			text += pointer.char # then update text
+			pointer = tree.root # and reset the position of pointer
+	return text
 
 
 
