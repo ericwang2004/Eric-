@@ -105,14 +105,17 @@ def construct_tree(freqs):
 	# at this point, the heap contains only one element
 	return h.minimum()	
 
-def encode(string):
-	tree = construct_tree(get_frequencies(string))
-	# tree is a HuffmanTree
-	encoded = {}
+def encode(current_node, current_bin, char_dict):
+	if current_node.is_leaf():
+		char_dict[current_node] = current_bin
+	if current_node.left != 0:
+		print(encode(current_node.left, current_bin+'0', char_dict))
+	if current_node.right != 0:
+		print(encode(current_node.right, current_bin+'1', char_dict))
 	
-
-
-
+def decode(bin_seq, tree):
+	# decode a given binary sequence
+	pass
 
 
 
