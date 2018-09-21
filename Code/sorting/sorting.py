@@ -100,7 +100,6 @@ def quicksort(l):
 			left.append(x)
 		else:
 			right.append(x)
-	# recursively call quicksort to sort left and right arrays
 	return quicksort(left) + pivots + quicksort(right)
 
 
