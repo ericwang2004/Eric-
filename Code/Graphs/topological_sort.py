@@ -42,7 +42,7 @@ def adj_matrix(lines):
 			v1, v2 = line.split(' ') # insert the 1s into the correct indices
 			adj_matrix[element_list[v1]][element_list[v2]] = 1
 	return adj_matrix
-
+'''
 def topological_sort(lines):
 	adjm = adj_matrix(lines) # create adjacency matrix
 	L = [] # L will contain the sorted vertices
@@ -91,6 +91,30 @@ def topological_sort(lines):
 			if v2edges[vertex] == 0 and vertex not in A and vertex not in L:
 				A.append(vertex)
 
+	return L
+'''
+
+def topological_sort(adjlist):
+	L = []
+	v2edges = {} # v:incoming
+
+	for vertex in adjlist:
+		v2edges[vertex] = 0
+	for vertex in adjlist:
+		for connection in adjlist[vertex]:
+			v2edges[connection] += 1
+
+	A = [v for v in v2edges if v2edges[v]==0]
+
+	while len(A) > 0:
+		element = A.pop()
+		L.append(element)
+
+		for v in adjlist[element]:
+			v2edges[v] -= 1
+			if v2edges[v] == 0:
+				A.append(v2edges[v])
+	
 	return L
 
 f = open('courses.txt', 'r')
