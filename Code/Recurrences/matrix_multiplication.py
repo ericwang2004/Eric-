@@ -23,6 +23,21 @@ def multiply(m1, m2):
 				product[rows_m1][cols_m2] += m1[rows_m1][rows_m2]*m2[rows_m2][cols_m2]
 	return product
 
+def split(m):
+	# split step for matrices
+	pass
+
+def strassen_multiply(m1, m2):
+	# assume each is square with power of 2 dimensions
+	if len(m1) == 1:
+		return [[m1[0][0] * m2[0][0]]]
+	A1 = [[] for i in range()]	
+
+
+
+
+
+
 m1 = [[1, 2, 3], [4, 5, 6]]
 m2 = [[7, 8], [9, 10], [11, 12]]
 #print(multiply(m1, m2, [[0, 0], [0, 0]]))
