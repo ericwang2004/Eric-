@@ -76,7 +76,7 @@ def topological_sort(adjlist):
 		for v in adjlist[element]: # and append to A the new vertices
 			v2edges[v] -= 1
 			if v2edges[v] == 0:
-				A.append(v2edges[v])
+				A.append(v)
 	
 	return L
 
