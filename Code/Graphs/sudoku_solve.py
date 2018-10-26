@@ -4,6 +4,7 @@
 #
 
 from collections import deque
+import time
 
 '''
 nodes = possible configurations
@@ -29,7 +30,7 @@ def related(pos1, pos2):
 	if coors1[0] == coors2[0] or coors1[1] == coors2[1]:
 		# same row or column
 		return True
-	elif coors1[0]-(coors1[0]%3)<=coors2[0]<=coors1[0]+(3-coors1[0]%3)-1 and coors1[1]-(coors1[1]%3)<=coors2[1]<=coors1[1]+(3-coors1[1]%3)-1:
+	elif pos1//27 == pos2//27 and (pos1%9)//3 == (pos2%9)//3:
 		# same 3x3 subsquare
 		return True
 	return False
@@ -47,27 +48,33 @@ def get_adjacent(string):
 				# only enter the number if all the related positions do not contain it
 				if str(num) not in r:
 					adj.append(string[:i] + str(num) + string[i+1:])
-	return adj	
+			break
+	return adj
 
 def DFS(string):
 	# uses DFS to solve the given sudoku puzzle
 	l = deque()
-	l.append([string])
-	visited = set([string])
+	l.append(string)
 	
 	while l:
-		path = l.pop()
-		if '.' not in path[-1]:
+		puzzle = l.pop()
+		if '.' not in puzzle:
 			# the puzzle is solved
-			return path
-		visited.add(path[-1])
-		for neighbor in get_adjacent(path[-1]):
-			if neighbor not in visited:
-				l.append(path + [neighbor])
+			return puzzle
+		for neighbor in get_adjacent(puzzle):
+			l.append(neighbor)
+
 	return -1
 
 f = open('99.txt', 'r')
 lines = [l.strip() for l in f.readlines()]
+
+for l in lines:
+	start = time.perf_counter()
+	display(DFS(l))
+	end = time.perf_counter()
+	print('Time:', end-start)
+
 
 
 
