@@ -30,7 +30,7 @@ def sort_edges(graph):
 	E = []
 	for v1 in graph:
 		for v2 in graph[v1]:
-			if (v1, v2[0], v2[1]) != E not in E and (v2[0], v1, v2[1]) not in E:
+			if (v1, v2[0], v2[1]) not in E and (v2[0], v1, v2[1]) not in E:
 				E.append((v1, v2[0], v2[1]))		
 	return sorted(E, key=lambda x: x[2])
 
@@ -49,5 +49,23 @@ def MST_kruskal(graph):
 			union(e[0], e[1]) # and connect them
 	return mst
 
+def MST_prim(graph):
+	visited = [list(G.items())[0][0]]
+	mst = []
+	
+	while len(visited) < len(graph):
+		min_edge_weight = 1000000
+		min_edge = 0
+		for v in visited:
+			for edge in graph[v]:
+				if edge[0] not in visited:
+					if edge[1] < min_edge_weight:
+						min_vertex = edge[0]
+						min_edge_weight = edge[1]
+						min_edge = edge
+		visited.append(min_vertex)
+		mst.append(min_edge)
+	
+	return mst
 
 
