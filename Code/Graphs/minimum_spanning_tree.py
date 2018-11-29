@@ -50,20 +50,27 @@ def MST_kruskal(graph):
 	return mst
 
 def MST_prim(graph):
-	visited = [list(G.items())[0][0]]
-	mst = []
+	visited = [list(graph.items())[0][0]] # list of visited vertices
+	# the first vertex can be anything since eventually all must be in the mst
+	mst = [] # will contain the edges of the mst
 	
 	while len(visited) < len(graph):
 		min_edge_weight = 1000000
 		min_edge = 0
 		for v in visited:
 			for edge in graph[v]:
+				# consider all vertices adjacent to any vertex in visited
 				if edge[0] not in visited:
+					# only consider it if it hasn't already been visited
 					if edge[1] < min_edge_weight:
+						# choose the one with the minimum edge weight
+						# call this optimal vertex min_vertex
 						min_vertex = edge[0]
 						min_edge_weight = edge[1]
 						min_edge = edge
-		visited.append(min_vertex)
+		# once the min_vertex is found, it has been visited
+		# and the corresponding edge must be part of the mst
+		visited.append(min_vertex) 
 		mst.append(min_edge)
 	
 	return mst
