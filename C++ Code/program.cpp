@@ -7,6 +7,9 @@
 
 #include <iostream>
 #include <vector>
+#include <stack>
+#include <string>
+
 using namespace std;
 
 void print_list(vector<int> l)
@@ -89,12 +92,41 @@ vector<int> mergesort(vector<int> l)
 }
 /*--------------*/
 
+int evaluate_postfix(string expr)
+{
+	stack<int> st;
+	for (int i=0; i<expr.size(); i++)
+	{
+		if (isdigit(expr[i]))
+			st.push(expr[i]-48);
+		else
+		{
+			int a = st.top();
+			st.pop();
+			int b = st.top();
+			st.pop();
+			if (expr[i] == '+')
+				st.push(a+b);
+			else if (expr[i] == '-')
+				st.push(b-a);
+			else if (expr[i] == 'x')
+				st.push(a*b);
+			else
+				st.push(b/a);
+		}
+	}
+	return st.top();
+}
 
 int main() 
 { 
+	string expr("2345x+-");
+	cout << evaluate_postfix(expr) << endl;
+	/*
 	static const int arr1[] = {16,2,77,29};
 	vector<int> v1 (arr1, arr1 + sizeof(arr1) / sizeof(arr1[0]) );
 	print_list(mergesort(v1));
+	*/
 	return 0;
 } 
 

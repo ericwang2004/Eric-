@@ -74,18 +74,21 @@ void left_right(int n, string s)
 	if (s.size() == n)
 		cout << s << endl;
 	else
+	{
 		left_right(n, s+"r");
 		left_right(n, s+"l");
+	}
 }
 
 int main()
 {
-
+	/*
 	static const int arr1[] = {1, 6, 4, 9};
 	static const int arr2[] = {5, 3, 7, 3};
 	vector <int> result;
 	vector<int> v1 (arr1, arr1+sizeof(arr1)/sizeof(arr1[0]));
 	vector<int> v2 (arr2, arr2+sizeof(arr2)/sizeof(arr2[0]));
-	print_list(combine(v1, v2, result));
+	*/
+	left_right(3, "");
 	return 0;
 }
