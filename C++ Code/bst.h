@@ -11,6 +11,11 @@ class Binary_Node
 	int value;
 	Binary_Node* left;
 	Binary_Node* right;
+	public:
+		bool is_leaf();
+		bool contains(int n);
+		void print_prefix();
+		int count_nodes();		
 	
 	friend class BST;	
 };
