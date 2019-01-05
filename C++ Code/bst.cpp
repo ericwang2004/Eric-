@@ -1,70 +1,72 @@
 #include "bst.h"
+#include <iostream>
+
+using namespace std;
 
 Binary_Node::Binary_Node()
 {
 	value = -1;
-	left = NULL;
-	right = NULL;
+	left = 0;
+	right = 0;
+}
+
+Binary_Node::Binary_Node(int value2, Binary_Node *left2, Binary_Node *right2)
+{
+	value = value2;
+	left = left2;
+	right = right2;
 }
 
 bool Binary_Node::is_leaf()
 {
-	if (left == -1 and right == -1)
+	if (left == 0 and right == 0)
 		return true;
 	return false;
-}
-
-bool Binary_Node::contains(int n)
-{
-	if (value == n)
-		return true;
-	else if (is_leaf())
-		return false;
-	if (left == -1 and right != -1)
-		return right.contains(n);
-	if (left != -1 and right == -1)
-		return left.contains(n);
-	if (left != -1 and right != -1)
-		return left.contains(n) or right.contains(n);
 }
 
 void Binary_Node::print_prefix()
 {
 	cout << value << " ";
 	if (left != 0)
-		left.print_prefix();
+		(*left).print_prefix();
 	if (right != 0)
-		right.print_prefix();
+		(*right).print_prefix();
 }
 
 int Binary_Node::count_nodes()
 {
-	if (is_leaf())
+	cout << "Called count_nodes\n" << value << "\n" << left << "\n" << right << endl;
+	if (left == 0 and right == 0)
 		return 1;
-	else if (left != -1 and right == -1)
-		return left.count_nodes() + 1;
-	else if (left == -1 and right != -1)
-		return right.count_nodes()+1;
+	else if (left != 0 and right == 0)
+		return (*left).count_nodes() + 1;
+	else if (left == 0 and right != 0)
+		return (*right).count_nodes()+1;
 	else
-		return left.count_nodes() + right.count_nodes() + 1;
+		return (*left).count_nodes() + (*right).count_nodes() + 1;
 }
 
 BST::BST()
 {
-	root = NULL;
+	root = 0;
+}
+
+BST::BST(Binary_Node *root2)
+{
+	root = root2;
 }
 
 void BST::insert(int n)
 {
-	Binary_Node current = root;
+/*
+	Binary_Node current = *root;
 	while (true)
 	{
 		if (current.value == n)
 			break;
 		else if (current.value < n)
-			/* it must be on the right branch */
 		{
-			if (*node.right == -1)
+			if (node.right == 0)
 			{
 				*node.right = Binary_Node(n);
 				break
@@ -74,7 +76,7 @@ void BST::insert(int n)
 		}
 		else
 		{
-			if (*node.left == -1)
+			if (node.left == 0)
 			{
 				*node.left = Binary_Node(n);
 				break
@@ -83,21 +85,37 @@ void BST::insert(int n)
 				current = current.left;
 		}
 	}
+*/
 }
 
 bool BST::contains(int n)
 {
-	return root.contains(n);
+	return contains_helper(root, n);
 }
 
 int BST::count_nodes()
 {
-	return root.count_nodes();
+	cout << "hello" << endl;
+	return (*root).count_nodes();
 }
 
 void BST::print_prefix()
 {
-	root.print_prefix();
+	(*root).print_prefix();
 }
 
+bool BST::contains_helper(Binary_Node* node, int n)
+{
+	if ((*node).value == n)
+		return true;
+	else if ((*node).is_leaf())
+		return false;
+	if ((*node).left == 0 and (*node).right != 0)
+		return contains_helper((*node).right, n);
+	if ((*node).left != 0 and (*node).right == 0)
+		return contains_helper((*node).left, n);
+	if ((*node).left != 0 and (*node).right != 0)
+		return contains_helper((*node).right, n) or contains_helper((*node).left, n);
+	return false;
+}
 
