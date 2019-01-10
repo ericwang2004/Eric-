@@ -33,9 +33,27 @@ void Binary_Node::print_prefix()
 		(*right).print_prefix();
 }
 
+void Binary_Node::print_postfix()
+{
+	if (left != 0)
+		(*left).print_postfix();
+	if (right != 0)
+		(*right).print_postfix();
+	cout << value << " ";
+}
+
+void Binary_Node::print_infix()
+{
+	if (left != 0)
+		(*left).print_infix();
+	cout << value << " ";
+	if (right != 0)
+		(*right).print_infix();
+}
+
 int Binary_Node::count_nodes()
 {
-	cout << "Called count_nodes\n" << value << "\n" << left << "\n" << right << endl;
+	//cout << "Called count_nodes\n" << value << "\n" << left << "\n" << right << endl;
 	if (left == 0 and right == 0)
 		return 1;
 	else if (left != 0 and right == 0)
@@ -58,7 +76,7 @@ BST::BST(Binary_Node *root2)
 
 void BST::insert(int n)
 {
-/*
+	/*
 	Binary_Node current = *root;
 	while (true)
 	{
@@ -66,19 +84,20 @@ void BST::insert(int n)
 			break;
 		else if (current.value < n)
 		{
-			if (node.right == 0)
+			if (current.right == 0)
 			{
-				*node.right = Binary_Node(n);
-				break
+				Binary_Node* new_node = new Binary_Node(n, 0, 0);
+				current.right = new_node;
+				break;
 			}
 			else
 				current = current.right;
 		}
 		else
 		{
-			if (node.left == 0)
+			if (current.left == 0)
 			{
-				*node.left = Binary_Node(n);
+				*current.left = Binary_Node(n);
 				break
 			}
 			else
@@ -102,6 +121,16 @@ int BST::count_nodes()
 void BST::print_prefix()
 {
 	(*root).print_prefix();
+}
+
+void BST::print_postfix()
+{
+	(*root).print_postfix();
+}
+
+void BST::print_infix()
+{
+	(*root).print_infix();
 }
 
 bool BST::contains_helper(Binary_Node* node, int n)
