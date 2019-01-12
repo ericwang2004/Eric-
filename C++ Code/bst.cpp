@@ -76,35 +76,36 @@ BST::BST(Binary_Node *root2)
 
 void BST::insert(int n)
 {
-	/*
-	Binary_Node current = *root;
+	Binary_Node* current = root;
 	while (true)
 	{
-		if (current.value == n)
+		cout << current->value << endl;
+		cout << current->left << " " << current->right << endl;
+		if (current->value == n)
 			break;
-		else if (current.value < n)
+		else if (current->value < n)
 		{
-			if (current.right == 0)
+			if (current->right == 0)
 			{
-				Binary_Node* new_node = new Binary_Node(n, 0, 0);
-				current.right = new_node;
+				cout << "about to insert right" << n << endl;
+				current->right = new Binary_Node(n, 0, 0);
 				break;
 			}
 			else
-				current = current.right;
+				current = current->right;
 		}
 		else
 		{
-			if (current.left == 0)
+			if (current->left == 0)
 			{
-				*current.left = Binary_Node(n);
-				break
+				cout << "about to insert left" << n << endl;
+				current->left = new Binary_Node(n, 0, 0);
+				break;
 			}
 			else
-				current = current.left;
+				current = current->left;
 		}
 	}
-*/
 }
 
 bool BST::contains(int n)

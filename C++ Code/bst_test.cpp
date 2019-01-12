@@ -7,10 +7,14 @@ using namespace std;
 
 int main()
 {
-	Binary_Node* n3 = new Binary_Node(11, 0, 0);
-	Binary_Node* n2 = new Binary_Node(7, 0, 0);
-	Binary_Node* n1 = new Binary_Node(5, n2, n3);
+	Binary_Node* n1 = new Binary_Node(6, 0, 0);
 	BST* bst = new BST(n1);
+	(*bst).insert(5);
+	(*bst).insert(3);
+	(*bst).insert(2);
+	(*bst).insert(7);
+	(*bst).insert(13);
+	(*bst).insert(14);
 	(*bst).print_infix();
 	//cout << "We created a binary tree" << endl;
 	//cout << (*n1).value << endl;
