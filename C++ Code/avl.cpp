@@ -1,32 +1,25 @@
-#include "bst.h"
+#include "avl.h"
 #include <iostream>
 #include <algorithm>
 
 using namespace std;
 
-Binary_Node::Binary_Node()
+AVL_Node::AVL_Node()
 {
-	height = 1;
+	height = 0;
+	balance_factor = 0;
 	value = -1;
 	left = 0;
 	right = 0;
 }
 
-Binary_Node::Binary_Node(int value2, Binary_Node *left2, Binary_Node *right2)
+
+bool AVL_Node::is_leaf()
 {
-	value = value2;
-	left = left2;
-	right = right2;
+	return (left == 0 and right == 0);
 }
 
-bool Binary_Node::is_leaf()
-{
-	if (left == 0 and right == 0)
-		return true;
-	return false;
-}
-
-void Binary_Node::print_prefix()
+void AVL_Node::print_prefix()
 {
 	cout << value << " ";
 	if (left != 0)
@@ -35,7 +28,7 @@ void Binary_Node::print_prefix()
 		(*right).print_prefix();
 }
 
-void Binary_Node::print_postfix()
+void AVL_Node::print_postfix()
 {
 	if (left != 0)
 		(*left).print_postfix();
@@ -44,7 +37,7 @@ void Binary_Node::print_postfix()
 	cout << value << " ";
 }
 
-void Binary_Node::print_infix()
+void AVL_Node::print_infix()
 {
 	if (left != 0)
 		(*left).print_infix();
@@ -53,7 +46,7 @@ void Binary_Node::print_infix()
 		(*right).print_infix();
 }
 
-int Binary_Node::count_nodes()
+int AVL_Node::count_nodes()
 {
 	//cout << "Called count_nodes\n" << value << "\n" << left << "\n" << right << endl;
 	if (left == 0 and right == 0)
@@ -66,19 +59,19 @@ int Binary_Node::count_nodes()
 		return (*left).count_nodes() + (*right).count_nodes() + 1;
 }
 
-BST::BST()
+AVL::AVL()
 {
 	root = 0;
 }
 
-BST::BST(Binary_Node *root2)
+AVL::AVL(AVL_Node *root2)
 {
 	root = root2;
 }
 
-void BST::insert(int n)
+void AVL::insert(int n)
 {
-	Binary_Node* current = root;
+	AVL_Node* current = root;
 	while (true)
 	{
 		if (current->value == n)
@@ -87,13 +80,13 @@ void BST::insert(int n)
 		{
 			if (current->right == 0)
 			{
-				current->right = new Binary_Node(n, 0, 0);
+				current->right = new AVL_Node(n, 0, 0);
 				
 				break;
 			}
 			else
 			{
-				current->height += 1;
+				current->height += 1;	
 				current = current->right;
 			}
 		}
@@ -101,73 +94,73 @@ void BST::insert(int n)
 		{
 			if (current->left == 0)
 			{
-				current->left = new Binary_Node(n, 0, 0);
+				current->left = new AVL_Node(n, 0, 0);
 				break;
 			}
 			else
 			{
-				current->height += 1;
+			
 				current = current->left;
 			}
 		}
 	}
 }
 
-void avl_insert(int n)
-{
-	insert(n);	
-}
 
-void left_rotate(Binary_Node* n)
+AVL_Node* left_rotate(AVL_Node* n)
 {
-	Binary_Node* n_right_child = n->right;
-	Binary_Node* temp = n_right_child->left;
+	AVL_Node* n_right_child = n->right;
+	AVL_Node* temp = n_right_child->left;
 	n_right_child = n;
 	n->right = temp;
 
 	// update n and n_right_child heights
-	
+	n->height = 1 + max((*n).left->height, (*n).right->height);	
+	n_right_child->height = 1 + max((*n_right_child).left->height, (*n_left_child).right->height);
+	return n_right_child;
 }
 
-void right_rotate(Binary_Node* n)
+AVL_Node* right_rotate(AVL_Node* n)
 {
-	Binary_Node* n_left_child = n->left;
-	Binary_Node* temp = n_left_child->right;
+	AVL_Node* n_left_child = n->left;
+	AVL_Node* temp = n_left_child->right;
 	n_left_child->right = n;
 	n->left = temp;
 
 	// update n and n_left_child heights
-		
+	n->height = 1 + max((*n).left->height, (*n).right->height);
+	n_left_child->height = 1 + max((*n_left_child).left->height, (*n_left_child).right->height);
+	return n_left_child;
 }
 
 
-bool BST::contains(int n)
+bool AVL::contains(int n)
 {
 	return contains_helper(root, n);
 }
 
-int BST::count_nodes()
+int AVL::count_nodes()
 {
 	cout << "hello" << endl;
 	return (*root).count_nodes();
 }
 
-void BST::print_prefix()
+void AVL::print_prefix()
 {
 	(*root).print_prefix();
 }
 
-void BST::print_postfix()
+void AVL::print_postfix()
 {
 	(*root).print_postfix();
 }
 
-void BST::print_infix()
+void AVL::print_infix()
 {
 	(*root).print_infix();
 }
 
-bool BST::contains_helper(Binary_Node* node, int n)
+bool AVL::contains_helper(AVL_Node* node, int n)
 {
 	if ((*node).value == n)
 		return true;

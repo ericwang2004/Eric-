@@ -15,7 +15,7 @@ int main()
 	(*bst).insert(7);
 	(*bst).insert(13);
 	(*bst).insert(14);
-	(*bst).print_infix();
+	cout << n1->height << endl;
 	//cout << "We created a binary tree" << endl;
 	//cout << (*n1).value << endl;
 	//cout << "There are " << (*bst).count_nodes() << " nodes" << endl;
