@@ -9,51 +9,51 @@ AVL_Node::AVL_Node()
 	height = 0;
 	balance_factor = 0;
 	value = -1;
-	left = 0;
-	right = 0;
+	left = NULL;
+	right = NULL;
 }
 
 
 bool AVL_Node::is_leaf()
 {
-	return (left == 0 and right == 0);
+	return (left == NULL and right == NULL);
 }
 
 void AVL_Node::print_prefix()
 {
 	cout << value << " ";
-	if (left != 0)
+	if (left != NULL)
 		(*left).print_prefix();
-	if (right != 0)
+	if (right != NULL)
 		(*right).print_prefix();
 }
 
 void AVL_Node::print_postfix()
 {
-	if (left != 0)
+	if (left != NULL)
 		(*left).print_postfix();
-	if (right != 0)
+	if (right != NULL)
 		(*right).print_postfix();
 	cout << value << " ";
 }
 
 void AVL_Node::print_infix()
 {
-	if (left != 0)
+	if (left != NULL)
 		(*left).print_infix();
 	cout << value << " ";
-	if (right != 0)
+	if (right != NULL)
 		(*right).print_infix();
 }
 
 int AVL_Node::count_nodes()
 {
 	//cout << "Called count_nodes\n" << value << "\n" << left << "\n" << right << endl;
-	if (left == 0 and right == 0)
+	if (left == NULL and right == NULL)
 		return 1;
-	else if (left != 0 and right == 0)
+	else if (left != NULL and right == NULL)
 		return (*left).count_nodes() + 1;
-	else if (left == 0 and right != 0)
+	else if (left == NULL and right != NULL)
 		return (*right).count_nodes()+1;
 	else
 		return (*left).count_nodes() + (*right).count_nodes() + 1;
@@ -61,7 +61,7 @@ int AVL_Node::count_nodes()
 
 AVL::AVL()
 {
-	root = 0;
+	root = NULL;
 }
 
 AVL::AVL(AVL_Node *root2)
@@ -69,54 +69,65 @@ AVL::AVL(AVL_Node *root2)
 	root = root2;
 }
 
-void AVL::insert(int n)
+AVL_Node* AVL::insert_helper(int n, AVL_Node* current)
 {
-	AVL_Node* current = root;
-	while (true)
+	if (current == NULL)
 	{
-		if (current->value == n)
-			break;
-		else if (current->value < n)
+		current = new AVL_Node;
+		current->value = n;
+	}
+	else if (current->value < n)
+	{
+		current->right = insert_helper(n, current->right);
+		if ((*current).right->height - (*current).left->height >= 2)
 		{
-			if (current->right == 0)
+			if ((*current).right->value > n)
 			{
-				current->right = new AVL_Node(n, 0, 0);
-				
-				break;
+				// RL case: right_rotate(current->right), left_rotate(current)
+				current->right = right_rotate(current->right);
+				current = left_rotate(current);
 			}
 			else
-			{
-				current->height += 1;	
-				current = current->right;
-			}
+				// RR case: left_rotate on current
+				current = left_rotate(current);
 		}
-		else
+	}
+	else if (current->value > n)
+	{
+		current->left = insert_helper(n, current->left);
+		if ((*current).left->height - (*current).right->height >= 2)
 		{
-			if (current->left == 0)
-			{
-				current->left = new AVL_Node(n, 0, 0);
-				break;
-			}
+			if ((*current).left->value > n)
+				// LL case: right rotate on current
+				current = right_rotate(current);
 			else
 			{
-			
-				current = current->left;
+				// LR case: left_rotate(current->left), right_rotate(current)
+				current->left = left_rotate(current->left);
+				current = right_rotate(current);	
 			}
 		}
 	}
+	// update height of current
+	current->height = max((*current).left->height, (*current).right->height)+1;
+	return current;
 }
 
+void AVL::insert(int n)
+{
+	root = insert_helper(n, root);
+}
 
 AVL_Node* left_rotate(AVL_Node* n)
 {
 	AVL_Node* n_right_child = n->right;
 	AVL_Node* temp = n_right_child->left;
-	n_right_child = n;
+	n_right_child->left = n;
 	n->right = temp;
 
 	// update n and n_right_child heights
 	n->height = 1 + max((*n).left->height, (*n).right->height);	
-	n_right_child->height = 1 + max((*n_right_child).left->height, (*n_left_child).right->height);
+	n_right_child->height = 1 + max((*n_right_child).left->height, (*n_right_child).right->height);
 	return n_right_child;
 }
 
@@ -141,7 +152,6 @@ bool AVL::contains(int n)
 
 int AVL::count_nodes()
 {
-	cout << "hello" << endl;
 	return (*root).count_nodes();
 }
 
@@ -166,11 +176,11 @@ bool AVL::contains_helper(AVL_Node* node, int n)
 		return true;
 	else if ((*node).is_leaf())
 		return false;
-	if ((*node).left == 0 and (*node).right != 0)
+	if ((*node).left == NULL and (*node).right != NULL)
 		return contains_helper((*node).right, n);
-	if ((*node).left != 0 and (*node).right == 0)
+	if ((*node).left != NULL and (*node).right == NULL)
 		return contains_helper((*node).left, n);
-	if ((*node).left != 0 and (*node).right != 0)
+	if ((*node).left != NULL and (*node).right != NULL)
 		return contains_helper((*node).right, n) or contains_helper((*node).left, n);
 	return false;
 }
