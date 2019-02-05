@@ -69,47 +69,81 @@ AVL::AVL(AVL_Node *root2)
 	root = root2;
 }
 
+int AVL::update_height(AVL_Node* node)
+{
+	if (node->left == NULL and node->right == NULL)
+		return 0;
+	else if (node->left == NULL and node->right != NULL)
+		return node->right->height + 1;
+	else if (node->left != NULL and node->right == NULL)
+		return node->left->height + 1;
+	else
+		return max(node->left->height, node->right->height) + 1;
+}
+
+int AVL::update_balance(AVL_Node* node)
+{
+	if (node->left == NULL and node->right == NULL)
+		return 0;
+	else if (node->left == NULL and node->right != NULL)
+		return node->height;
+	else if (node->left != NULL and node->right == NULL)
+		return 0 - node->height;
+	else
+		return node->right->height - node->left->height;
+}
+
 AVL_Node* AVL::insert_helper(int n, AVL_Node* current)
 {
 	if (current == NULL)
 	{
-		current = new AVL_Node;
-		current->value = n;
+		AVL_Node* new_node = new AVL_Node;
+		new_node->value = n;
+		return new_node;
 	}
 	else if (current->value < n)
 	{
 		current->right = insert_helper(n, current->right);
-		if ((*current).right->height - (*current).left->height >= 2)
-		{
-			if ((*current).right->value > n)
-			{
-				// RL case: right_rotate(current->right), left_rotate(current)
-				current->right = right_rotate(current->right);
-				current = left_rotate(current);
-			}
-			else
-				// RR case: left_rotate on current
-				current = left_rotate(current);
-		}
 	}
+
 	else if (current->value > n)
 	{
 		current->left = insert_helper(n, current->left);
-		if ((*current).left->height - (*current).right->height >= 2)
+	}
+	else
+		return current;
+
+	/* update height of current ******************************/
+	current->height = update_height(current);
+	current->balance_factor = update_balance(current);
+	/***********************************************************/
+
+	if (current->balance_factor >= 2)
+	// right heavy
+	{
+		if ((*current).right->value > n)
 		{
-			if ((*current).left->value > n)
-				// LL case: right rotate on current
-				current = right_rotate(current);
-			else
-			{
-				// LR case: left_rotate(current->left), right_rotate(current)
-				current->left = left_rotate(current->left);
-				current = right_rotate(current);	
-			}
+			// RL case: right_rotate(current->right), left_rotate(current)
+			current->right = right_rotate(current->right);
+			current = left_rotate(current);
+		}
+		else
+			// RR case: left_rotate on current
+			current = left_rotate(current);
+	}
+	if (current->balance_factor <= -2)
+	// left heavy
+	{
+		if (current->left->value > n)
+		// LL case: right rotate on current
+			current = right_rotate(current);
+		else
+		{
+			// LR case: left_rotate(current->left), right_rotate(current)
+			current->left = left_rotate(current->left);
+			current = right_rotate(current);
 		}
 	}
-	// update height of current
-	current->height = max((*current).left->height, (*current).right->height)+1;
 	return current;
 }
 
@@ -118,7 +152,7 @@ void AVL::insert(int n)
 	root = insert_helper(n, root);
 }
 
-AVL_Node* left_rotate(AVL_Node* n)
+AVL_Node* AVL::left_rotate(AVL_Node* n)
 {
 	AVL_Node* n_right_child = n->right;
 	AVL_Node* temp = n_right_child->left;
@@ -126,12 +160,14 @@ AVL_Node* left_rotate(AVL_Node* n)
 	n->right = temp;
 
 	// update n and n_right_child heights
-	n->height = 1 + max((*n).left->height, (*n).right->height);	
-	n_right_child->height = 1 + max((*n_right_child).left->height, (*n_right_child).right->height);
+	n->height = update_height(n);
+	n->balance_factor = update_balance(n);
+	n_right_child->height = update_height(n_right_child);
+	n_right_child->balance_factor = update_balance(n_right_child);
 	return n_right_child;
 }
 
-AVL_Node* right_rotate(AVL_Node* n)
+AVL_Node* AVL::right_rotate(AVL_Node* n)
 {
 	AVL_Node* n_left_child = n->left;
 	AVL_Node* temp = n_left_child->right;
@@ -139,8 +175,10 @@ AVL_Node* right_rotate(AVL_Node* n)
 	n->left = temp;
 
 	// update n and n_left_child heights
-	n->height = 1 + max((*n).left->height, (*n).right->height);
-	n_left_child->height = 1 + max((*n_left_child).left->height, (*n_left_child).right->height);
+	n->height = update_height(n);
+	n->balance_factor = update_balance(n);
+	n_left_child->height = update_height(n_left_child);
+	n_left_child->balance_factor = update_balance(n_left_child);
 	return n_left_child;
 }
 

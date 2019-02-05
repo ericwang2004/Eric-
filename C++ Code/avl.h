@@ -26,10 +26,12 @@ class AVL
 		AVL();
 		AVL(AVL_Node* root2);
 		AVL_Node* root;
+		int update_height(AVL_Node* node);
+		int update_balance(AVL_Node* node);
 		AVL_Node* insert_helper(int n, AVL_Node* current);
 		void insert(int n);
-		AVL_Node* left_rotate(AVL_Node n);
-		AVL_Node* right_rotate(AVL_Node n);
+		AVL_Node* left_rotate(AVL_Node* n);
+		AVL_Node* right_rotate(AVL_Node* n);
 		int count_nodes();
 		bool contains(int n);
 		void print_prefix();
